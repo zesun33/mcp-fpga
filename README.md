@@ -22,7 +22,7 @@
 // Tool Call: fpga_toolchain_info
 {
   "runtime": "podman",
-  "image": "localhost/zesun33/fpga",
+  "image": "ghcr.io/zesun33/fpga",
   "versions": {
     "yosys": "Yosys 0.38+92",
     "nextpnr-ice40": "present",
@@ -84,16 +84,26 @@
 
 ## Execution Runtime
 
-`mcp-fpga` runs inside the [`zesun33/fpga`](https://github.com/zesun33/eda-docker-images) rootless Podman image (`localhost/zesun33/fpga`):
+`mcp-fpga` runs inside the [`zesun33/fpga`](https://github.com/zesun33/eda-docker-images) rootless Podman image so tools are identical on any Linux host.
+
+**Public install (recommended — anyone can pull):**
+```bash
+podman pull ghcr.io/zesun33/fpga:latest
+export MCP_FPGA_IMAGE=ghcr.io/zesun33/fpga
+```
+
+Local builds from `eda-docker-images` still work as `localhost/zesun33/fpga` (the historical default). Override anytime with `MCP_FPGA_IMAGE`.
 
 - Container mount: `-v <workspace>:/workspace:Z -w /workspace`
 - Podman storage option: `--storage-opt overlay.ignore_chown_errors=true`
 
 To force host binaries instead of container execution:
-
 ```bash
 export MCP_FPGA_RUNTIME=host
 ```
+
+Targets iCE40 / ECP5 toolchains shipped in `zesun33/fpga`.
+
 
 ---
 
