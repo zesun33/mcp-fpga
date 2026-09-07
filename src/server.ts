@@ -120,7 +120,7 @@ export function createServer(runner: ToolRunner = new ToolRunner()): Server {
     {
       name: "fpga_program",
       description:
-        "Flashes an iCE40 bitstream via iceprog. Dry-run (default) only reports the planned command: real flashing needs board hardware this host cannot verify. ECP5 needs openFPGALoader, which is absent from the image.",
+        "Flashes an iCE40 `.bin` via iceprog or an ECP5 `.bit`/`.svf` via openFPGALoader. Dry-run (default) only reports the planned command: real flashing needs board hardware this host cannot verify.",
       inputSchema: {
         type: "object",
         properties: {
@@ -152,7 +152,7 @@ export function createServer(runner: ToolRunner = new ToolRunner()): Server {
     {
       name: "fpga_toolchain_info",
       description:
-        "Returns active container/host runtime and versions of Yosys, nextpnr, icepack, ecppack, and iceprog.",
+        "Returns active container/host runtime and versions of Yosys, nextpnr, icepack, ecppack, iceprog, and openFPGALoader.",
       inputSchema: {
         type: "object",
         properties: {},

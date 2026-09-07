@@ -24,6 +24,7 @@ export async function getFpgaToolchainInfo(runner: ToolRunner, cwd?: string): Pr
   const icepack = await probe(runner, "icepack", ["-h"], cwd);
   const ecppack = await probe(runner, "ecppack", ["--help"], cwd);
   const iceprog = await probe(runner, "iceprog", ["--help"], cwd);
+  const ofl = await probe(runner, "openFPGALoader", ["--help"], cwd);
 
   return {
     runtime: runner.getRuntime(),
@@ -35,7 +36,7 @@ export async function getFpgaToolchainInfo(runner: ToolRunner, cwd?: string): Pr
       icepack: icepack === "Not found" ? icepack : "present",
       ecppack: ecppack === "Not found" ? ecppack : "present",
       iceprog: iceprog === "Not found" ? iceprog : "present",
-      openFPGALoader: "Not installed (ECP5 flashing needs external tooling)",
+      openFPGALoader: ofl === "Not found" ? ofl : "present",
     },
   };
 }

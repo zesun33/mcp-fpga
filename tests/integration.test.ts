@@ -23,7 +23,7 @@ test("Integration: fpga_toolchain_info probes the FPGA toolchain", async () => {
   assert.notEqual(info.versions.icepack, "Not found");
   assert.notEqual(info.versions.ecppack, "Not found");
   assert.notEqual(info.versions.iceprog, "Not found");
-  assert.match(info.versions.openFPGALoader, /Not installed/);
+  assert.notEqual(info.versions.openFPGALoader, "Not found");
 });
 
 test("Integration: ice40 synth -> P&R -> bitstream on blink", async () => {
@@ -100,11 +100,19 @@ test("Integration: unknown board is rejected with guidance", async () => {
 });
 
 test("Integration: fpga_program dry-run never touches hardware", async () => {
-  const res = await runFpgaProgram(runner, {
+  const ice = await runFpgaProgram(runner, {
     bitstreamFile: "blink_tmp.bin",
     cwd: projectRoot,
   });
-  assert.equal(res.success, true);
-  assert.equal(res.flashed, false);
-  assert.equal(res.programmer, "iceprog");
+  assert.equal(ice.success, true);
+  assert.equal(ice.flashed, false);
+  assert.equal(ice.programmer, "iceprog");
+
+  const ecp5 = await runFpgaProgram(runner, {
+    bitstreamFile: "blink_tmp.bit",
+    cwd: projectRoot,
+  });
+  assert.equal(ecp5.success, true);
+  assert.equal(ecp5.flashed, false);
+  assert.equal(ecp5.programmer, "openFPGALoader");
 });

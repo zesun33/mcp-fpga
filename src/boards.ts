@@ -31,16 +31,16 @@ export const BOARD_PRESETS: BoardPreset[] = [
     family: "ecp5",
     device: "45k",
     package: "CABGA381",
-    programmer: "openFPGALoader (not installed)",
-    notes: "ULX3S ECP5-45F. openFPGALoader is absent from the image; program externally.",
+    programmer: "openFPGALoader",
+    notes: "ULX3S ECP5-45F. Flash via openFPGALoader; needs hardware USB. fpga_program dry-runs by default.",
   },
   {
     board: "ecp5_25k",
     family: "ecp5",
     device: "25k",
     package: "CABGA256",
-    programmer: "openFPGALoader (not installed)",
-    notes: "Generic ECP5-25K CABGA256 target. openFPGALoader is absent from the image.",
+    programmer: "openFPGALoader",
+    notes: "Generic ECP5-25K CABGA256 target. Flash via openFPGALoader; needs hardware USB.",
   },
 ];
 

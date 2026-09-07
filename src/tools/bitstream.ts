@@ -65,10 +65,15 @@ export interface ProgramOptions {
   timeoutMs?: number;
 }
 
+export function pickProgrammer(bitstreamFile: string): "iceprog" | "openFPGALoader" {
+  if (/\.(bit|svf|fs)$/i.test(bitstreamFile)) return "openFPGALoader";
+  return "iceprog";
+}
+
 /**
- * Flashes an iCE40 bitstream via iceprog. Dry-run (default) only reports
- * the planned command: real flashing needs hardware USB this host cannot
- * verify. openFPGALoader (ECP5) is absent from the image.
+ * Flashes a bitstream: iceprog for iCE40 `.bin`, openFPGALoader for ECP5
+ * `.bit`/`.svf`. Dry-run (default) only reports the planned command: real
+ * flashing needs hardware USB this host cannot verify.
  */
 export async function runFpgaProgram(
   runner: ToolRunner,
@@ -80,30 +85,46 @@ export async function runFpgaProgram(
       flashed: false, warnings: [], errors: ["No bitstreamFile specified."],
     };
   }
+  const programmer = pickProgrammer(options.bitstreamFile);
+  const planned =
+    programmer === "openFPGALoader"
+      ? `openFPGALoader -b ${options.bitstreamFile}`
+      : `iceprog ${options.bitstreamFile}`;
   if (options.dryRun ?? true) {
     return {
-      success: true, bitstreamFile: options.bitstreamFile, programmer: "iceprog",
+      success: true, bitstreamFile: options.bitstreamFile, programmer,
       flashed: false,
-      warnings: ["Dry run only: no hardware touched. Set dry_run=false on a host with the board attached."],
+      warnings: [
+        `Dry run only (${planned}): no hardware touched. Set dry_run=false on a host with the board attached.`,
+      ],
       errors: [],
     };
   }
 
   const base = path.resolve(options.cwd || process.cwd());
-  const res = await runner.execute("iceprog", [options.bitstreamFile], {
-    cwd: base,
-    timeoutMs: options.timeoutMs ?? 120000,
-  });
+  const res =
+    programmer === "openFPGALoader"
+      ? await runner.execute("openFPGALoader", [options.bitstreamFile], {
+          cwd: base,
+          timeoutMs: options.timeoutMs ?? 120000,
+        })
+      : await runner.execute("iceprog", [options.bitstreamFile], {
+          cwd: base,
+          timeoutMs: options.timeoutMs ?? 120000,
+        });
   const combined = `${res.stdout}\n${res.stderr}`;
   const flashed = res.exitCode === 0;
   return {
     success: flashed,
     bitstreamFile: options.bitstreamFile,
-    programmer: "iceprog",
+    programmer,
     flashed,
     warnings: [],
     errors: flashed
       ? []
-      : [`iceprog failed (exit ${res.exitCode}); is a programmed board attached?`, ...combined.split("\n").map((l) => l.trim()).filter(Boolean).slice(-5)],
+      : [
+          `${programmer} failed (exit ${res.exitCode}); is a programmed board attached?`,
+          ...combined.split("\n").map((l) => l.trim()).filter(Boolean).slice(-5),
+        ],
   };
 }

@@ -7,9 +7,9 @@
 [![Protocol: MCP](https://img.shields.io/badge/protocol-MCP_stdio-blueviolet)](https://modelcontextprotocol.io)
 [![Runtime: Rootless Podman](https://img.shields.io/badge/runtime-rootless_podman-brightgreen)](#execution-runtime)
 
-`mcp-fpga` gives AI coding agents and IDEs (**Cursor**, **Windsurf**, **GitHub Copilot / OpenAI Codex**, **Claude Code**, **Google Antigravity**, **OpenCode**, **Cline**) a complete open-source FPGA flow: Yosys synthesis to nextpnr JSON, nextpnr place-and-route with utilization/Fmax reports, bitstream packing (icepack/ecppack), and hardware programming via iceprog. Board presets (iCEBreaker, HX8K, ULX3S-class, generic ECP5) resolve device/package details.
+`mcp-fpga` gives AI coding agents and IDEs (**Cursor**, **Windsurf**, **GitHub Copilot / OpenAI Codex**, **Claude Code**, **Google Antigravity**, **OpenCode**, **Cline**) a complete open-source FPGA flow: Yosys synthesis to nextpnr JSON, nextpnr place-and-route with utilization/Fmax reports, bitstream packing (icepack/ecppack), and hardware programming via iceprog (iCE40) or openFPGALoader (ECP5). Board presets (iCEBreaker, HX8K, ULX3S-class, generic ECP5) resolve device/package details.
 
-> Hardware honesty: bitstream flashing needs a board on USB, which CI hosts cannot verify. `fpga_program` dry-runs by default and only reports the plan; set `dry_run: false` on a host with hardware attached. ECP5 flashing needs openFPGALoader, which is absent from the image — program ECP5 bitstreams externally.
+> Hardware honesty: bitstream flashing needs a board on USB, which CI hosts cannot verify. `fpga_program` dry-runs by default and only reports the plan; set `dry_run: false` on a host with hardware attached. ECP5 `.bit` files use openFPGALoader in the FPGA image.
 
 ---
 
@@ -30,7 +30,7 @@
     "icepack": "present",
     "ecppack": "present",
     "iceprog": "present",
-    "openFPGALoader": "Not installed (ECP5 flashing needs external tooling)"
+    "openFPGALoader": "present"
   }
 }
 ```
@@ -76,9 +76,9 @@
 | `fpga_synth` | `verilog_sources: string[]`, `top_module: string`, `family?: "ice40" \| "ecp5"`, `cwd?: string` | `synth_ice40` / `synth_ecp5` | RTL to nextpnr JSON netlist with cell/wire counts. |
 | `fpga_place_route` | `json_netlist: string`, `top_module?: string`, `family?: "ice40" \| "ecp5"`, `board?: string`, `device?: string`, `package?: string`, `cwd?: string` | `nextpnr-ice40` / `nextpnr-ecp5` | P&R with utilization and Fmax from `--report` JSON. Explicit device/package wins over presets. |
 | `fpga_bitstream` | `input_file: string`, `compress?: boolean`, `cwd?: string` | `icepack` / `ecppack` | Routed image to bitstream (`.asc`→`.bin`, `.config`→`.bit`). |
-| `fpga_program` | `bitstream_file: string`, `dry_run?: boolean`, `cwd?: string` | `iceprog` | iCE40 flashing; dry-run default, honest HW errors otherwise. |
+| `fpga_program` | `bitstream_file: string`, `dry_run?: boolean`, `cwd?: string` | `iceprog` / `openFPGALoader` | iCE40 `.bin` via iceprog, ECP5 `.bit` via openFPGALoader; dry-run default, honest HW errors otherwise. |
 | `fpga_boards` | *none* | Static presets | Board → device/package/programmer table. |
-| `fpga_toolchain_info` | *none* | Probe | Versions of the FPGA toolchain, including openFPGALoader absence. |
+| `fpga_toolchain_info` | *none* | Probe | Versions of the FPGA toolchain, including openFPGALoader. |
 
 ---
 

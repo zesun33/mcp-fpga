@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { parseNextpnrReport, parseYosysStats } from "../src/parsers/nextpnr.js";
 import { resolvePreset, listBoards } from "../src/boards.js";
+import { pickProgrammer } from "../src/tools/bitstream.js";
 
 test("parseNextpnrReport reads utilization and fmax", () => {
   const report = JSON.stringify({
@@ -33,4 +34,10 @@ test("board presets resolve case-insensitively", () => {
   assert.equal(resolvePreset("nope"), undefined);
   assert.ok(listBoards().length >= 4);
   assert.ok(listBoards().some((b) => b.family === "ecp5"));
+});
+
+test("pickProgrammer routes ECP5 bitstreams to openFPGALoader", () => {
+  assert.equal(pickProgrammer("blink.bin"), "iceprog");
+  assert.equal(pickProgrammer("blink.bit"), "openFPGALoader");
+  assert.equal(pickProgrammer("blink.svf"), "openFPGALoader");
 });
