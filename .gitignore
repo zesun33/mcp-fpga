@@ -1,0 +1,17 @@
+node_modules/
+dist/
+*.log
+*.asc
+*.bin
+*.bit
+*.config
+*.pcf
+*_tmp.json
+.DS_Store
+
+# Agent memory / local progress (never commit)
+MEMORY.md
+MEMORY.local.md
+.memory/
+*.memory.md
+*.local.md

@@ -1,0 +1,26 @@
+{
+  "name": "@zesun33/mcp-fpga",
+  "version": "0.1.0",
+  "description": "Model Context Protocol (MCP) server for FPGA synthesis, place-and-route, and bitstream programming (iCE40/ECP5)",
+  "type": "module",
+  "bin": {
+    "mcp-fpga": "./dist/index.js"
+  },
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "test": "tsx --test tests/**/*.test.ts",
+    "test:unit": "tsx --test tests/parsers.test.ts tests/contract.test.ts",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.6.0",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}
