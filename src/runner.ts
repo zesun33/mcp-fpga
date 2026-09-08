@@ -23,7 +23,7 @@ export class ToolRunner {
 
   constructor() {
     const envRuntime = process.env.MCP_FPGA_RUNTIME as RuntimeType | undefined;
-    this.imageName = process.env.MCP_FPGA_IMAGE || "localhost/zesun33/fpga";
+    this.imageName = process.env.MCP_FPGA_IMAGE || "ghcr.io/zesun33/fpga";
 
     if (envRuntime && ["podman", "docker", "host"].includes(envRuntime)) {
       this.runtime = envRuntime;

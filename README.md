@@ -92,7 +92,7 @@ podman pull ghcr.io/zesun33/fpga:latest
 export MCP_FPGA_IMAGE=ghcr.io/zesun33/fpga
 ```
 
-Local builds from `eda-docker-images` still work as `localhost/zesun33/fpga` (the historical default). Override anytime with `MCP_FPGA_IMAGE`.
+`ghcr.io/zesun33/fpga` is the default (anyone can pull). Local builds still work as `localhost/zesun33/fpga` via `MCP_FPGA_IMAGE`.
 
 - Container mount: `-v <workspace>:/workspace:Z -w /workspace`
 - Podman storage option: `--storage-opt overlay.ignore_chown_errors=true`

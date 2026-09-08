@@ -7,8 +7,9 @@ async function probe(runner: ToolRunner, cmd: string, args: string[], cwd?: stri
       const res = await runner.execute(cmd, args, { cwd });
       // Some tools (ecppack --help) exit non-zero while proving presence;
       // only a spawn failure means absent.
-      const out = `${res.stdout}\n${res.stderr}`.split("\n").map((l) => l.trim()).find((l) => l.length > 0) || "";
-      if (/Process spawn error/i.test(out)) continue;
+      const blob = `${res.stdout}\n${res.stderr}`;
+      if (/Process spawn error|executable file not found|command not found/i.test(blob)) continue;
+      const out = blob.split("\n").map((l) => l.trim()).find((l) => l.length > 0) || "";
       if (out) return out.slice(0, 120);
     } catch {
       // retry below

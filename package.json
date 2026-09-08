@@ -1,6 +1,6 @@
 {
   "name": "@zesun33/mcp-fpga",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Model Context Protocol (MCP) server for FPGA synthesis, place-and-route, and bitstream programming (iCE40/ECP5)",
   "type": "module",
   "bin": {
