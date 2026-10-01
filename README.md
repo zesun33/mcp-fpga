@@ -11,6 +11,16 @@
 
 > Hardware honesty: bitstream flashing needs a board on USB, which CI hosts cannot verify. `fpga_program` dry-runs by default and only reports the plan; set `dry_run: false` on a host with hardware attached. ECP5 `.bit` files use openFPGALoader in the FPGA image.
 
+## Install and run
+
+Run this MCP server directly from npm:
+
+```bash
+npx -y @zesun33/mcp-fpga
+```
+
+For the complete hardware-agent setup, use `npx -y @zesun33/create-hw-agent my-asic`.
+
 ---
 
 ## ⚡ Quick Tour: See It in Action
