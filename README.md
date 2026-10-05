@@ -1,5 +1,26 @@
 # @zesun33/mcp-fpga
 
+<!-- BEGIN GENERATED PROJECT GUIDE -->
+
+## Purpose and first steps
+
+Synthesize and route FPGA designs and prepare bitstreams through an MCP server.
+
+**Who it is for:** Hardware engineers using an MCP-capable client or coding agent.
+
+**First task:** Configure the server in your MCP client, then call `fpga_toolchain_info` before running a design.
+
+**What to expect:** Tool availability, then synthesis/place-and-route metrics and bitstream artifacts.
+
+**Current scope:** Published MCP server for iCE40/ECP5 flows. Programming defaults to a dry run and requires an attached board for an actual hardware check. The npx command waits for an MCP client.
+
+**Start here:** [Runtime requirements and configuration](README.md#execution-runtime).
+
+**Related projects:** [mcp-yosys](https://github.com/zesun33/mcp-yosys), [mcp-verilog](https://github.com/zesun33/mcp-verilog).
+
+[Choose another project](https://github.com/zesun33/personal-projects/blob/main/GETTING_STARTED.md).
+<!-- END GENERATED PROJECT GUIDE -->
+
 > Model Context Protocol (MCP) server for FPGA synthesis, place-and-route, and bitstream programming (iCE40/ECP5).
 
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](./LICENSE)
@@ -25,7 +46,9 @@ For the complete hardware-agent setup, use `npx -y @zesun33/create-hw-agent my-a
 
 ## ⚡ Quick Tour: See It in Action
 
-### Real Agent Scenarios in 60 Seconds
+The examples below illustrate tool requests and result fields. Timings, counts, and scores depend on the input and runtime; they are not guaranteed outcomes or fresh verification results.
+
+### Example tool requests and results
 
 #### 1. Probing the Toolchain (Zero-Config Verification)
 ```json
