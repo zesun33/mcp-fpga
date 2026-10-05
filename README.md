@@ -156,3 +156,7 @@ Run the full 6-gate verification suite:
 ## License
 
 Apache-2.0 © 2026 Md Zesun Ahmed Mia
+
+## npm releases
+
+See [RELEASING.md](https://github.com/zesun33/mcp-fpga/blob/main/RELEASING.md) for GitHub Actions dry runs and trusted publishing.
